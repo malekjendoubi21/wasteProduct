@@ -26,6 +26,13 @@
                 <span class="sidebar-nav-text">Users</span>
             </a>
         </div>
+        
+        <div class="sidebar-nav-item">
+            <a href="{{ route('demandeListes.index') }}" class="sidebar-nav-link {{ request()->routeIs('demandeListes.*') ? 'active' : '' }}">
+                <i class="fas fa-handshake sidebar-nav-icon"></i>
+                    <span class="sidebar-nav-text">Demandes partenariat</span>
+            </a>
+        </div>
 
         <div class="sidebar-nav-item">
             <a href="{{ route('products.index') }}" class="sidebar-nav-link {{ request()->routeIs('products.*') ? 'active' : '' }}">

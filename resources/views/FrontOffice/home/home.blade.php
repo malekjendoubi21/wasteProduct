@@ -4,7 +4,7 @@
 
 @section('content')
     <!-- Hero Section -->
-    <section class="hero-section">
+    <section class="hero-section animate-slide-in" style="--delay: 0.2s;">
         <div class="hero-overlay"></div>
         <div class="container">
             <div class="hero-content">
@@ -53,7 +53,7 @@
     </section>
 
     <!-- Services Section -->
-    <section id="services" class="services-section">
+    <section id="services" class="services-section animate-slide-in" style="--delay: 0.4s;">
         <div class="container">
             <div class="section-header">
                 <div class="section-badge">
@@ -125,7 +125,7 @@
     </section>
 
     <!-- Impact Section -->
-    <section class="impact-section">
+    <section class="impact-section animate-slide-in" style="--delay: 0.6s;">
         <div class="container">
             <div class="impact-grid">
                 <div class="impact-content">
@@ -168,59 +168,110 @@
         </div>
     </section>
 
-    <!-- Section Partenaires -->
-    <section id="partenaires" class="partners-section">
-        <div class="container">
-            <div class="section-header">
-                <div class="section-badge">
-                    <i class="fas fa-handshake"></i>
-                    <span>Nos Partenaires</span>
-                </div>
-                <h2 class="section-title">Nos Partenaires de Confiance</h2>
-                <p class="section-subtitle">
-                    Nous collaborons avec des organisations de premier plan pour améliorer nos solutions de gestion durable des déchets.
-                </p>
+ <!-- Section Partenaires -->
+<section id="partenaires" class="services-section animate-slide-in" style="--delay: 0.8s;">
+    <div class="container">
+        <div class="section-header">
+            <div class="section-badge">
+                <i class="fas fa-handshake"></i>
+                <span>Nos Partenaires</span>
             </div>
-            
-            <div class="partners-grid">
-                <div class="partner-card animate-slide-in" style="--delay: 0.2s;">
-                    <div class="partner-logo">
-                        <img src="{{ asset('images/partners/greentech.png') }}" alt="GreenTech Solutions">
+            <h2 class="section-title">Nos Partenaires de Confiance</h2>
+            <p class="section-subtitle">
+                Nous collaborons avec des organisations de premier plan pour renforcer nos solutions de gestion durable des déchets.
+            </p>
+        </div>
+
+        <div class="partners-slider">
+            <div class="partners-track">
+                <!-- Logos partenaires -->
+                <div class="partner-logo">
+                    <div class="service-icon">
+                        <div class="icon-bg"></div>
+                        <div class="icon-wrapper">
+                            <img src="{{ asset('images/carr.png') }}" alt="Logo de GreenTech Solutions" class="partner-logo-img" loading="lazy">
+                        </div>
                     </div>
-                    <h3 class="partner-title">GreenTech Solutions</h3>
-                    <p class="partner-description">
-                        Innovateurs en technologies écologiques, fournissant des équipements de recyclage de pointe.
-                    </p>
-                    <a href="#" class="partner-link">En savoir plus</a>
                 </div>
-                
-                <div class="partner-card animate-slide-in" style="--delay: 0.4s;">
-                    <div class="partner-logo">
-                        <img src="{{ asset('images/partners/ecocycle.png') }}" alt="EcoCycle Works">
+                <div class="partner-logo">
+                    <div class="service-icon">
+                        <div class="icon-bg"></div>
+                        <div class="icon-wrapper">
+                            <img src="{{ asset('images/carr.png') }}" alt="Logo de EcoCycle Works" class="partner-logo-img" loading="lazy">
+                        </div>
                     </div>
-                    <h3 class="partner-title">EcoCycle Works</h3>
-                    <p class="partner-description">
-                        Experts en traitement des déchets, nous aidant à atteindre l'objectif de zéro déchet en décharge.
-                    </p>
-                    <a href="#" class="partner-link">En savoir plus</a>
                 </div>
-                
-                <div class="partner-card animate-slide-in" style="--delay: 0.6s;">
-                    <div class="partner-logo">
-                        <img src="{{ asset('images/partners/sustainco.png') }}" alt="SustainCo">
+                <div class="partner-logo">
+                    <div class="service-icon">
+                        <div class="icon-bg"></div>
+                        <div class="icon-wrapper">
+                            <img src="{{ asset('images/carr.png') }}" alt="Logo de SustainCo" class="partner-logo-img" loading="lazy">
+                        </div>
                     </div>
-                    <h3 class="partner-title">SustainCo</h3>
-                    <p class="partner-description">
-                        Leaders en conseil en durabilité, guidant nos stratégies environnementales.
-                    </p>
-                    <a href="#" class="partner-link">En savoir plus</a>
+                </div>
+                <!-- Logos dupliqués pour le défilement -->
+                <div class="partner-logo">
+                    <div class="service-icon">
+                        <div class="icon-bg"></div>
+                        <div class="icon-wrapper">
+                            <img src="{{ asset('images/carr.png') }}" alt="Logo de GreenTech Solutions" class="partner-logo-img" loading="lazy">
+                        </div>
+                    </div>
+                </div>
+                <div class="partner-logo">
+                    <div class="service-icon">
+                        <div class="icon-bg"></div>
+                        <div class="icon-wrapper">
+                            <img src="{{ asset('images/carr.png') }}" alt="Logo de EcoCycle Works" class="partner-logo-img" loading="lazy">
+                        </div>
+                    </div>
+                </div>
+                <div class="partner-logo">
+                    <div class="service-icon">
+                        <div class="icon-bg"></div>
+                        <div class="icon-wrapper">
+                            <img src="{{ asset('images/carr.png') }}" alt="Logo de SustainCo" class="partner-logo-img" loading="lazy">
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </section>
+
+        <!-- Bouton pour afficher le formulaire -->
+        <div class="partner-cta" style="margin-top: 20px;">
+            <button id="demande-btn" class="btn btn-primary">Demander le partenariat</button>
+        </div>
+
+        <!-- Formulaire caché au départ -->
+            <form action="{{ route('demande.partenariat.store') }}" method="POST" enctype="multipart/form-data">
+        @csrf
+        <input type="text" name="nom_organisation" placeholder="Nom de l'organisation" required>
+        <input type="text" name="type_organisation" placeholder="Type d'organisation" required>
+        <input type="text" name="secteur_activite" placeholder="Secteur d'activité" required>
+        <label for="logo">Logo de l'organisation </label>
+        <input type="file" name="logo" id="logo" accept="image/*">
+        <input type="email" name="email_contact" placeholder="Email de contact" required>
+        <input type="text" name="telephone_contact" placeholder="Téléphone de contact" required>
+        <input type="text" name="site_web" placeholder="Site web (optionnel)">
+        <input type="text" name="adresse" placeholder="Adresse" required>
+        <textarea name="message" placeholder="Message" required></textarea>
+        <button type="submit" class="btn btn-success">Envoyer la demande</button>
+    </form>
+</div>
+    </div>
+</section>
+
+<!-- Script pour toggle le formulaire -->
+<script>
+    document.getElementById('demande-btn').addEventListener('click', function() {
+        const form = document.getElementById('demande-form');
+        form.style.display = form.style.display === 'none' ? 'block' : 'none';
+        this.textContent = form.style.display === 'block' ? 'Fermer le formulaire' : 'Demander le partenariat';
+    });
+</script>
 
     <!-- CTA Section -->
-    <section class="cta-section">
+    <section class="cta-section animate-slide-in" style="--delay: 1.0s;">
         <div class="container">
             <div class="cta-content">
                 <h2 class="cta-title">Prêt à Faire la Différence ?</h2>
@@ -234,7 +285,7 @@
                         <i class="fas fa-user-plus"></i>
                         <span>Commencer Gratuitement</span>
                     </a>
-                    <a href="" class="btn btn-outline-primary btn-lg">
+                    <a href="#" class="btn btn-outline-primary btn-lg">
                         <i class="fas fa-phone"></i>
                         <span>Contactez les Ventes</span>
                     </a>
@@ -258,6 +309,253 @@
         </div>
     </section>
 @endsection
+
+@push('styles')
+<style>
+/* Animation pour toutes les sections */
+.animate-slide-in {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: slideIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+    animation-delay: var(--delay);
+}
+
+@keyframes slideIn {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Partenaires Grid - Horizontal Scroll */
+.partners-grid {
+    display: flex;
+    overflow-x: auto;
+    gap: var(--space-8);
+    margin-top: var(--space-12);
+    padding-bottom: var(--space-4);
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-primary-500) var(--color-surface);
+}
+
+.partners-grid::-webkit-scrollbar {
+    height: 8px;
+}
+
+.partners-grid::-webkit-scrollbar-track {
+    background: var(--color-surface);
+    border-radius: var(--radius-md);
+}
+
+.partners-grid::-webkit-scrollbar-thumb {
+    background: var(--color-primary-500);
+    border-radius: var(--radius-md);
+}
+
+.partners-grid .service-card {
+    flex: 0 0 350px;
+    min-width: 350px;
+    background: var(--color-surface);
+    border-radius: var(--radius-2xl);
+    padding: var(--space-10);
+    box-shadow: var(--shadow-sm);
+    transition: all var(--transition-base);
+    border: 1px solid var(--color-border);
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+    height: 100%;
+}
+
+.partners-grid .service-card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-xl);
+}
+
+.partners-grid .service-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(45deg, var(--color-primary-500), var(--color-primary-700));
+    transform: scaleX(0);
+    transition: transform var(--transition-base);
+}
+
+.partners-grid .service-card:hover::before {
+    transform: scaleX(1);
+}
+
+.service-icon {
+    margin-bottom: var(--space-6);
+    position: relative;
+}
+
+.icon-wrapper {
+    width: 6rem;
+    height: 6rem;
+    background: linear-gradient(45deg, var(--color-primary-500), var(--color-primary-700));
+    border-radius: var(--radius-2xl);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 2;
+    overflow: hidden;
+}
+
+.icon-bg {
+    position: absolute;
+    top: -12px;
+    left: -12px;
+    width: 7.5rem;
+    height: 7.5rem;
+    background: rgba(34, 197, 94, 0.15);
+    border-radius: var(--radius-3xl);
+    z-index: 1;
+}
+
+.partner-logo-img {
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+}
+
+.service-title {
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-4);
+}
+
+.service-description {
+    color: var(--color-text-secondary);
+    line-height: var(--line-height-relaxed);
+    margin-bottom: var(--space-6);
+}
+
+.service-features {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.service-features li {
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-2);
+    padding-left: var(--space-6);
+    position: relative;
+}
+
+.service-features li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--color-success-500);
+    font-weight: var(--font-weight-bold);
+}
+
+.partner-cta {
+    text-align: center;
+    margin-top: var(--space-12);
+}
+
+.btn-primary {
+    background: var(--color-primary-500);
+    color: white;
+    padding: var(--space-3) var(--space-6);
+    border: none;
+    border-radius: var(--radius-md);
+    font-weight: var(--font-weight-semibold);
+    transition: background var(--transition-base);
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn-primary:hover {
+    background: var(--color-primary-700);
+}
+
+.btn-outline-primary {
+    background: transparent;
+    color: var(--color-primary-500);
+    border: 2px solid var(--color-primary-500);
+    padding: var(--space-3) var(--space-6);
+    border-radius: var(--radius-md);
+    font-weight: var(--font-weight-semibold);
+    transition: all var(--transition-base);
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn-outline-primary:hover {
+    background: var(--color-primary-500);
+    color: white;
+}
+
+.btn-lg {
+    padding: var(--space-4) var(--space-8);
+    font-size: var(--font-size-lg);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .hero-title {
+        font-size: var(--font-size-4xl);
+    }
+    
+    .hero-stats {
+        justify-content: center;
+    }
+    
+    .services-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .impact-grid {
+        grid-template-columns: 1fr;
+        gap: var(--space-8);
+    }
+    
+    .impact-content {
+        padding-right: 0;
+        text-align: center;
+    }
+    
+    .impact-stats {
+        grid-template-columns: 1fr;
+    }
+    
+    .cta-actions {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .hero-actions {
+        justify-content: center;
+    }
+
+    .partners-grid {
+        padding: 0 var(--space-4);
+    }
+
+    .partners-grid .service-card {
+        flex: 0 0 300px;
+        min-width: 300px;
+        padding: var(--space-8);
+    }
+
+    .partner-cta .btn-primary {
+        width: 100%;
+        max-width: 300px;
+    }
+}
+</style>
+@endpush
 
 @push('scripts')
 <script>
