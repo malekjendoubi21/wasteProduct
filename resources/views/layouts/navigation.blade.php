@@ -1,0 +1,153 @@
+<nav class="navbar">
+    <div class="navbar-container">
+        <!-- Brand -->
+        <a href="{{ route('home') }}" class="navbar-brand">
+            <div class="navbar-logo">
+                <i class="fas fa-recycle"></i>
+            </div>
+            <span class="navbar-brand-text">Waste Product</span>
+        </a>
+
+        <!-- Desktop Navigation -->
+        <ul class="navbar-nav">
+            <li><a href="{{ route('home') }}" class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </a></li>
+            
+            <li><a href="{{ route('about') }}" class="nav-link {{ request()->routeIs('about') ? 'active' : '' }}">
+                <i class="fas fa-info-circle"></i>
+                <span>About</span>
+            </a></li>
+            
+            <li><a href="{{ route('services') }}" class="nav-link {{ request()->routeIs('services') ? 'active' : '' }}">
+                <i class="fas fa-cogs"></i>
+                <span>Services</span>
+            </a></li>
+            
+            <li><a href="{{ route('contact') }}" class="nav-link {{ request()->routeIs('contact') ? 'active' : '' }}">
+                <i class="fas fa-envelope"></i>
+                <span>Contact</span>
+            </a></li>
+        </ul>
+
+        <!-- User Menu -->
+        <div class="navbar-user">
+            @auth
+                <div class="dropdown">
+                    <a href="{{ route('profile.show') }}" class="dropdown-toggle user-profile-link">
+                        <div class="user-avatar">
+                            {{ substr(auth()->user()->name, 0, 1) }}
+                        </div>
+                        <div class="user-info">
+                            <div class="user-name">{{ auth()->user()->name }}</div>
+                            <div class="user-role">{{ ucfirst(auth()->user()->role ?? 'User') }}</div>
+                        </div>
+                        <i class="fas fa-chevron-down dropdown-arrow"></i>
+                    </a>
+                    
+                    <div class="dropdown-menu">
+                        <a href="{{ route('profile.edit') }}" class="dropdown-item">
+                            <i class="fas fa-user"></i>
+                            <span>Profile</span>
+                        </a>
+                        
+                        @if(auth()->user()->role === 'admin')
+                            <a href="{{ route('dashboard') }}" class="dropdown-item">
+                                <i class="fas fa-tachometer-alt"></i>
+                                <span>Dashboard</span>
+                            </a>
+                        @endif
+                        
+                        <div class="dropdown-divider"></div>
+                        
+                        <form method="POST" action="{{ route('logout') }}" class="dropdown-item">
+                            @csrf
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span>Logout</span>
+                        </form>
+                    </div>
+                </div>
+            @else
+                <a href="{{ route('login') }}" class="btn btn-outline-primary btn-sm">
+                    <i class="fas fa-sign-in-alt"></i>
+                    <span>Login</span>
+                </a>
+            @endauth
+        </div>
+
+        <!-- Mobile Toggle -->
+        <button class="navbar-toggler" aria-label="Toggle navigation">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div class="navbar-collapse">
+        <ul class="navbar-nav">
+            <li><a href="{{ route('home') }}" class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </a></li>
+            
+            <li><a href="{{ route('about') }}" class="nav-link {{ request()->routeIs('about') ? 'active' : '' }}">
+                <i class="fas fa-info-circle"></i>
+                <span>About</span>
+            </a></li>
+            
+            <li><a href="{{ route('services') }}" class="nav-link {{ request()->routeIs('services') ? 'active' : '' }}">
+                <i class="fas fa-cogs"></i>
+                <span>Services</span>
+            </a></li>
+            
+            <li><a href="{{ route('contact') }}" class="nav-link {{ request()->routeIs('contact') ? 'active' : '' }}">
+                <i class="fas fa-envelope"></i>
+                <span>Contact</span>
+            </a></li>
+            
+            @auth
+                <div class="dropdown">
+                    <a href="#" class="dropdown-toggle">
+                        <div class="user-avatar">
+                            {{ substr(auth()->user()->name, 0, 1) }}
+                        </div>
+                        <div class="user-info">
+                            <div class="user-name">{{ auth()->user()->name }}</div>
+                            <div class="user-role">{{ ucfirst(auth()->user()->role ?? 'User') }}</div>
+                        </div>
+                        <i class="fas fa-chevron-down"></i>
+                    </a>
+                    
+                    <div class="dropdown-menu">
+                        <a href="{{ route('profile.edit') }}" class="dropdown-item">
+                            <i class="fas fa-user"></i>
+                            <span>Profile</span>
+                        </a>
+                        
+                        @if(auth()->user()->role === 'admin')
+                            <a href="{{ route('dashboard') }}" class="dropdown-item">
+                                <i class="fas fa-tachometer-alt"></i>
+                                <span>Dashboard</span>
+                            </a>
+                        @endif
+                        
+                        <div class="dropdown-divider"></div>
+                        
+                        <form method="POST" action="{{ route('logout') }}" class="dropdown-item">
+                            @csrf
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span>Logout</span>
+                        </form>
+                    </div>
+                </div>
+            @else
+                <a href="{{ route('login') }}" class="btn btn-primary">
+                    <i class="fas fa-sign-in-alt"></i>
+                    <span>Login</span>
+                </a>
+            @endauth
+        </ul>
+    </div>
+</nav>
