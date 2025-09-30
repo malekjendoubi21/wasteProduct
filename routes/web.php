@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\PartenaireDemandeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -80,7 +81,19 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/settings', function () {
         return view('BackOffice.settings.index');
     })->name('settings.index');
+
+    // Listes des Demandes de partenariat
+    Route::get('/demandes-partenariat', [PartenaireDemandeController::class, 'index'])->name('demandeListes.index');
+    // Afficher le détail d'une demande
+    Route::get('/demande-partenariat/{id}', [PartenaireDemandeController::class, 'show'])->name('demande.show');
+    // Mettre à jour le statut (Accepter / Refuser)
+    Route::patch('/demande-partenariat/{id}/status', [PartenaireDemandeController::class, 'updateStatus'])->name('demande.updateStatus');
+
 });
 
+
+// Route publique pour envoyer la demande de partenariat
+    Route::post('/demande-partenariat', [PartenaireDemandeController::class, 'store'])
+    ->name('demande.partenariat.store');
 // Routes auth (login, register, password, etc.)
 require __DIR__.'/auth.php';
