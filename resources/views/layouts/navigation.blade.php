@@ -20,6 +20,11 @@
                 <span>About</span>
             </a></li>
             
+            <li><a href="{{ route('produits.index') }}" class="nav-link {{ request()->routeIs('produits.*') ? 'active' : '' }}">
+                <i class="fas fa-box"></i>
+                <span>Produits</span>
+            </a></li>
+            
             <li><a href="{{ route('services') }}" class="nav-link {{ request()->routeIs('services') ? 'active' : '' }}">
                 <i class="fas fa-cogs"></i>
                 <span>Services</span>
@@ -95,6 +100,11 @@
             <li><a href="{{ route('about') }}" class="nav-link {{ request()->routeIs('about') ? 'active' : '' }}">
                 <i class="fas fa-info-circle"></i>
                 <span>About</span>
+            </a></li>
+            
+            <li><a href="{{ route('produits.index') }}" class="nav-link {{ request()->routeIs('produits.*') ? 'active' : '' }}">
+                <i class="fas fa-box"></i>
+                <span>Produits</span>
             </a></li>
             
             <li><a href="{{ route('services') }}" class="nav-link {{ request()->routeIs('services') ? 'active' : '' }}">
