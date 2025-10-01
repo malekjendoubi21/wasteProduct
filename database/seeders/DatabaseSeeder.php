@@ -29,5 +29,34 @@ class DatabaseSeeder extends Seeder
 
         // Create additional test users
         User::factory(5)->create();
+
+        // Create categories
+        $categories = [
+            'Électronique',
+            'Alimentation',
+            'Vêtements',
+            'Mobilier',
+            'Jardin',
+            'Sport',
+            'Livres',
+            'Jouets',
+            'Décoration',
+            'Automobile',
+        ];
+
+        foreach ($categories as $categoryName) {
+            \App\Models\Catégorie::create([
+                'label' => $categoryName,
+            ]);
+        }
+
+        // Create products for each category
+        $categoriesCreated = \App\Models\Catégorie::all();
+        
+        foreach ($categoriesCreated as $category) {
+            \App\Models\Product::factory(rand(3, 8))
+                ->withCategory($category)
+                ->create();
+        }
     }
 }
