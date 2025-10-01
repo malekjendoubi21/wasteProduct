@@ -37,8 +37,21 @@
                             <td>{{ optional($liv->date_livraison)->format('Y-m-d') }}</td>
                             <td>{{ optional($liv->employe)->name }}</td>
                             <td>
-                                <a href="{{ route('livraisons.show', $liv) }}" class="btn btn-sm btn-outline-primary">Voir</a>
-                                <a href="{{ route('livraisons.edit', $liv) }}" class="btn btn-sm btn-outline-warning">Modifier</a>
+                                <div class="d-flex align-items-center gap-2">
+                                    <a href="{{ route('livraisons.show', $liv) }}" class="btn btn-sm btn-outline-success" title="Voir">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                    <a href="{{ route('livraisons.edit', $liv) }}" class="btn btn-sm btn-outline-warning" title="Modifier">
+                                        <i class="fas fa-pen"></i>
+                                    </a>
+                                    <form action="{{ route('livraisons.destroy', $liv) }}" method="POST" class="d-inline" onsubmit="return confirm('Supprimer cette livraison ?');">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-sm btn-outline-danger" title="Supprimer">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </form>
+                                </div>
                             </td>
                         </tr>
                     @empty

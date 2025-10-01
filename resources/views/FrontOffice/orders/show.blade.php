@@ -11,10 +11,10 @@
     <div class="row g-4">
         <div class="col-md-6">
             <div class="card"><div class="card-body">
-                <p><strong>Date:</strong> {{ optional($commande->date)->format('Y-m-d H:i') }}</p>
-                <p><strong>Montant:</strong> {{ number_format($commande->montant, 2, ',', ' ') }} €</p>
-                <p><strong>Produit:</strong> {{ optional($commande->product)->nom }}</p>
-                <p><strong>Quantité:</strong> {{ $commande->quantity }}</p>
+                <div class="mb-2"><strong>Date:</strong> {{ optional($commande->date)->format('Y-m-d H:i') }}</div>
+                <div class="mb-2"><strong>Montant:</strong> <span class="badge bg-success">{{ number_format($commande->montant, 2, ',', ' ') }} €</span></div>
+                <div class="mb-2"><strong>Produit:</strong> {{ optional($commande->product)->nom }}</div>
+                <div class="mb-2"><strong>Quantité:</strong> {{ $commande->quantity }}</div>
             </div></div>
         </div>
         <div class="col-md-6">
@@ -24,7 +24,7 @@
                     @forelse($commande->livraisons as $liv)
                         <li class="list-group-item">
                             <div class="d-flex justify-content-between">
-                                <span>{{ $liv->adresse_livraison }} - {{ $liv->statut }}</span>
+                                <span>{{ $liv->adresse_livraison }} - <span class="badge bg-info">{{ $liv->statut }}</span></span>
                                 <small>{{ optional($liv->date_livraison)->format('Y-m-d') }}</small>
                             </div>
                         </li>
