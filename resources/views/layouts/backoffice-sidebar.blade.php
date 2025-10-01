@@ -61,6 +61,27 @@
             </a>
         </div>
         <div class="sidebar-nav-item">
+            <a href="{{ route('livraisons.index') }}" class="sidebar-nav-link {{ request()->routeIs('livraisons.*') ? 'active' : '' }}">
+                <i class="fas fa-truck sidebar-nav-icon"></i>
+                <span class="sidebar-nav-text">Livraisons</span>
+            </a>
+        </div>
+
+        <div class="sidebar-nav-item">
+            <a href="{{ route('trajets.index') }}" class="sidebar-nav-link {{ request()->routeIs('trajets.*') ? 'active' : '' }}">
+                <i class="fas fa-route sidebar-nav-icon"></i>
+                <span class="sidebar-nav-text">Trajets</span>
+            </a>
+        </div>
+
+        <div class="sidebar-nav-item">
+            <a href="{{ route('vehicules.index') }}" class="sidebar-nav-link {{ request()->routeIs('vehicules.*') ? 'active' : '' }}">
+                <i class="fas fa-van-shuttle sidebar-nav-icon"></i>
+                <span class="sidebar-nav-text">Véhicules</span>
+            </a>
+        </div>
+
+        <div class="sidebar-nav-item">
             <a href="{{ route('reports.index') }}" class="sidebar-nav-link {{ request()->routeIs('reports.*') ? 'active' : '' }}">
                 <i class="fas fa-chart-bar sidebar-nav-icon"></i>
                 <span class="sidebar-nav-text">Reports</span>

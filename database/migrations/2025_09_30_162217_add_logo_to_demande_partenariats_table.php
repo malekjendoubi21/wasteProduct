@@ -12,8 +12,10 @@ return new class extends Migration
     public function up(): void
     {
          Schema::table('demande_partenariats', function (Blueprint $table) {
-        $table->string('logo')->after('site_web');
-    });
+            if (!Schema::hasColumn('demande_partenariats', 'logo')) {
+                $table->string('logo')->after('site_web');
+            }
+        });
     }
 
     /**
@@ -22,7 +24,9 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('demande_partenariats', function (Blueprint $table) {
-        $table->string('logo')->after('site_web');
-    });
+            if (Schema::hasColumn('demande_partenariats', 'logo')) {
+                $table->dropColumn('logo');
+            }
+        });
     }
 };
