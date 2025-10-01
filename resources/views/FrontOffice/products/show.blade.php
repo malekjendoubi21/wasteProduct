@@ -115,6 +115,12 @@
                                     <i class="fas fa-shopping-cart"></i>
                                     Contacter pour achat
                                 </button>
+                                @auth
+                                    <a href="{{ route('donations.create', $product) }}" class="btn btn-success btn-lg me-3">
+                                        <i class="fas fa-gift"></i>
+                                        Ajouter à mes dons
+                                    </a>
+                                @endauth
                             @else
                                 <button class="btn btn-secondary btn-lg me-3" disabled>
                                     <i class="fas fa-times"></i>

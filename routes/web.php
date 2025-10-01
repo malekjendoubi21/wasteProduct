@@ -4,6 +4,8 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PartenaireDemandeController;
 use App\Http\Controllers\EvenementController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AssociationController; 
+use App\Http\Controllers\DonationController; 
 
 /*
 |--------------------------------------------------------------------------
@@ -35,6 +37,9 @@ Route::get('/services', function () {
 Route::get('/contact', function () {
     return view('FrontOffice.contact.index');
 })->name('contact');
+
+
+
 // Routes protégées pour les utilisateurs connectés
 Route::middleware(['auth'])->group(function () {
     // Dashboard pour tous les utilisateurs connectés
@@ -47,9 +52,22 @@ Route::middleware(['auth'])->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/profile/show', [ProfileController::class, 'show'])->name('profile.show');
+
+ 
+ 
     
     // Password update route
     Route::put('/password', [ProfileController::class, 'updatePassword'])->name('password.update');
+    
+   // Routes pour les dons (FrontOffice)
+    Route::get('/dons', [DonationController::class, 'index'])->name('donations.index');
+    Route::get('/dons/creer/{product}', [DonationController::class, 'create'])->name('donations.create');
+    Route::post('/dons', [DonationController::class, 'store'])->name('donations.store');
+    Route::get('/dons/{donation}/edit', [DonationController::class, 'edit'])->name('donations.edit');
+    Route::patch('/dons/{donation}', [DonationController::class, 'update'])->name('donations.update');
+    Route::delete('/dons/{donation}', [DonationController::class, 'destroy'])->name('donations.destroy');
+  
+
 });
 
 // Routes protégées pour les admins uniquement
@@ -66,7 +84,16 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/products', function () {
         return view('BackOffice.products.index');
     })->name('products.index');
+
+   
     
+    
+ 
+     // Routes CRUD pour les associations (BackOffice) - UNIQUEMENT resource pour éviter conflits
+    Route::resource('associations', AssociationController::class);
+    // Route de recherche pour associations
+    Route::get('/associations/search', [AssociationController::class, 'search'])->name('associations.search');
+ });
     Route::get('/categories', function () {
         return view('BackOffice.categories.index');
     })->name('categories.index');
@@ -111,7 +138,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::resource('vehicules', \App\Http\Controllers\VehiculeController::class);
     Route::resource('trajets', \App\Http\Controllers\TrajetController::class);
 
-});
+
 
 // Routes FrontOffice pour l'affichage des produits
 Route::get('/produits', [\App\Http\Controllers\ProductController::class, 'frontIndex'])->name('produits.index');

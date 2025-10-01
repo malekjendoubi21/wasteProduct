@@ -461,4 +461,6 @@ class ProductController extends Controller
 
         return view('FrontOffice.products.category', compact('products', 'categories', 'types', 'categorie'));
     }
+
+    
 }
