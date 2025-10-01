@@ -52,11 +52,10 @@
                                     <td>
                                         @if($demande->logo)
                                             @php
-                                                // Supprime le préfixe 'storage/' si présent pour éviter la duplication
-                                                $logoPath = str_replace('storage/', '', $demande->logo);
+                                                $logoPath = str_replace('images/', '', $demande->logo);
                                             @endphp
-                                            <img src="{{ asset('storage/' . $logoPath) }}" alt="Logo" width="50" 
-                                                 onerror="this.src='{{ asset('images/default-logo.png') }}'; this.alt='Logo par défaut';">
+                                            <img src="{{ asset('images/' . $logoPath) }}" alt="Logo" width="50" 
+                                                 onerror="this.onerror=null; this.src='{{ asset('images/default-logo.png') }}'; this.alt='Logo par défaut';">
                                         @else
                                             N/A
                                         @endif
@@ -76,8 +75,21 @@
                                         <form action="{{ route('demande.updateStatus', $demande->id) }}" method="POST" style="display:inline-block;">
                                             @csrf
                                             @method('PATCH')
-                                            <button type="submit" name="statut" value="accepte" class="btn btn-sm btn-outline-success">Accepter</button>
-                                            <button type="submit" name="statut" value="refuse" class="btn btn-sm btn-outline-danger">Refuser</button>
+                                            <div>
+                                                <input type="hidden" name="statut" value="accepte">
+                                                <input type="password" name="custom_password" placeholder="Mot de passe" class="form-control mb-2" required>
+                                                <button type="submit" class="btn btn-sm btn-outline-success">Accepter</button>
+                                            </div>
+                                        </form>
+                                        <form action="{{ route('demande.updateStatus', $demande->id) }}" method="POST" style="display:inline-block;">
+                                            @csrf
+                                            @method('PATCH')
+                                            <input type="hidden" name="statut" value="refuse">
+                                            <button type="submit" class="btn btn-sm btn-outline-danger">Refuser</button>
+                                        </form>
+                                        <form action="{{ route('demande.sendTestEmail', $demande->id) }}" method="POST" style="display:inline-block;">
+                                            @csrf
+                                            <button type="submit" class="btn btn-sm btn-outline-info">Tester l'email</button>
                                         </form>
                                     </td>
                                 </tr>

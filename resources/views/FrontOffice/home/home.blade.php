@@ -169,6 +169,7 @@
     </section>
 
  <!-- Section Partenaires -->
+<!-- Section Partenaires -->
 <section id="partenaires" class="services-section animate-slide-in" style="--delay: 0.8s;">
     <div class="container">
         <div class="section-header">
@@ -183,92 +184,100 @@
         </div>
 
         <div class="partners-slider">
-            <div class="partners-track">
+            <div class="partners-track d-flex flex-wrap justify-content-center gap-4">
                 <!-- Logos partenaires -->
-                <div class="partner-logo">
-                    <div class="service-icon">
-                        <div class="icon-bg"></div>
-                        <div class="icon-wrapper">
-                            <img src="{{ asset('images/carr.png') }}" alt="Logo de GreenTech Solutions" class="partner-logo-img" loading="lazy">
+                @foreach(['carr.png','carr.png','carr.png','carr.png','carr.png','carr.png'] as $logo)
+                    <div class="partner-logo text-center">
+                        <div class="service-icon">
+                            <div class="icon-bg"></div>
+                            <div class="icon-wrapper">
+                                <img src="{{ asset('images/'.$logo) }}" alt="Logo partenaire" class="partner-logo-img" loading="lazy">
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="partner-logo">
-                    <div class="service-icon">
-                        <div class="icon-bg"></div>
-                        <div class="icon-wrapper">
-                            <img src="{{ asset('images/carr.png') }}" alt="Logo de EcoCycle Works" class="partner-logo-img" loading="lazy">
-                        </div>
-                    </div>
-                </div>
-                <div class="partner-logo">
-                    <div class="service-icon">
-                        <div class="icon-bg"></div>
-                        <div class="icon-wrapper">
-                            <img src="{{ asset('images/carr.png') }}" alt="Logo de SustainCo" class="partner-logo-img" loading="lazy">
-                        </div>
-                    </div>
-                </div>
-                <!-- Logos dupliqués pour le défilement -->
-                <div class="partner-logo">
-                    <div class="service-icon">
-                        <div class="icon-bg"></div>
-                        <div class="icon-wrapper">
-                            <img src="{{ asset('images/carr.png') }}" alt="Logo de GreenTech Solutions" class="partner-logo-img" loading="lazy">
-                        </div>
-                    </div>
-                </div>
-                <div class="partner-logo">
-                    <div class="service-icon">
-                        <div class="icon-bg"></div>
-                        <div class="icon-wrapper">
-                            <img src="{{ asset('images/carr.png') }}" alt="Logo de EcoCycle Works" class="partner-logo-img" loading="lazy">
-                        </div>
-                    </div>
-                </div>
-                <div class="partner-logo">
-                    <div class="service-icon">
-                        <div class="icon-bg"></div>
-                        <div class="icon-wrapper">
-                            <img src="{{ asset('images/carr.png') }}" alt="Logo de SustainCo" class="partner-logo-img" loading="lazy">
-                        </div>
-                    </div>
-                </div>
+                @endforeach
             </div>
         </div>
 
         <!-- Bouton pour afficher le formulaire -->
-        <div class="partner-cta" style="margin-top: 20px;">
+        <div class="partner-cta text-center mt-4">
             <button id="demande-btn" class="btn btn-primary">Demander le partenariat</button>
         </div>
 
-        <!-- Formulaire caché au départ -->
-            <form action="{{ route('demande.partenariat.store') }}" method="POST" enctype="multipart/form-data">
-        @csrf
-        <input type="text" name="nom_organisation" placeholder="Nom de l'organisation" required>
-        <input type="text" name="type_organisation" placeholder="Type d'organisation" required>
-        <input type="text" name="secteur_activite" placeholder="Secteur d'activité" required>
-        <label for="logo">Logo de l'organisation </label>
-        <input type="file" name="logo" id="logo" accept="image/*">
-        <input type="email" name="email_contact" placeholder="Email de contact" required>
-        <input type="text" name="telephone_contact" placeholder="Téléphone de contact" required>
-        <input type="text" name="site_web" placeholder="Site web (optionnel)">
-        <input type="text" name="adresse" placeholder="Adresse" required>
-        <textarea name="message" placeholder="Message" required></textarea>
-        <button type="submit" class="btn btn-success">Envoyer la demande</button>
-    </form>
-</div>
+        <!-- Formulaire de demande (caché au départ) -->
+        <div id="demande-form-container" class="mt-4" style="display:none;">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Formulaire de Partenariat</h3>
+                </div>
+                <div class="card-body">
+                    <form action="{{ route('demande.partenariat.store') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <div class="form-group mb-3">
+                            <label for="nom_organisation" class="form-label">Nom de l'organisation</label>
+                            <input type="text" name="nom_organisation" id="nom_organisation" class="form-control" required>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label for="type_organisation" class="form-label">Type d'organisation</label>
+                            <input type="text" name="type_organisation" id="type_organisation" class="form-control" required>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label for="secteur_activite" class="form-label">Secteur d'activité</label>
+                            <input type="text" name="secteur_activite" id="secteur_activite" class="form-control" required>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label for="logo" class="form-label">Logo de l'organisation</label>
+                            <input type="file" name="logo" id="logo" class="form-control" accept="image/*">
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label for="email_contact" class="form-label">Email de contact</label>
+                            <input type="email" name="email_contact" id="email_contact" class="form-control" required>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label for="telephone_contact" class="form-label">Téléphone de contact</label>
+                            <input type="text" name="telephone_contact" id="telephone_contact" class="form-control" required>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label for="site_web" class="form-label">Site web (optionnel)</label>
+                            <input type="text" name="site_web" id="site_web" class="form-control">
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label for="adresse" class="form-label">Adresse</label>
+                            <input type="text" name="adresse" id="adresse" class="form-control" required>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label for="message" class="form-label">Message</label>
+                            <textarea name="message" id="message" class="form-control" rows="5" required></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-success">
+                            <i class="fas fa-paper-plane"></i> Envoyer la demande
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 </section>
 
-<!-- Script pour toggle le formulaire -->
+<!-- Script toggle formulaire -->
 <script>
-    document.getElementById('demande-btn').addEventListener('click', function() {
-        const form = document.getElementById('demande-form');
-        form.style.display = form.style.display === 'none' ? 'block' : 'none';
-        this.textContent = form.style.display === 'block' ? 'Fermer le formulaire' : 'Demander le partenariat';
-    });
+document.getElementById('demande-btn').addEventListener('click', function() {
+    const formContainer = document.getElementById('demande-form-container');
+    formContainer.style.display = formContainer.style.display === 'none' ? 'block' : 'none';
+    this.textContent = formContainer.style.display === 'block' ? 'Fermer le formulaire' : 'Demander le partenariat';
+});
 </script>
+
+
 
     <!-- CTA Section -->
     <section class="cta-section animate-slide-in" style="--delay: 1.0s;">

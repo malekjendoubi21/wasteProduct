@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PartenaireDemandeController;
+use App\Http\Controllers\EvenementController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -95,7 +96,13 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::resource('products', \App\Http\Controllers\ProductController::class);
     Route::get('/products/search', [\App\Http\Controllers\ProductController::class, 'search'])->name('products.search');
     Route::patch('/products/{product}/stock', [\App\Http\Controllers\ProductController::class, 'updateStock'])->name('products.updateStock');
-
+//Routes CRUD pour les Événements (BackOffice)
+    Route::get('/evenements', [EvenementController::class, 'index'])->name('evenements.index');
+    Route::get('/evenements/create', [EvenementController::class, 'create'])->name('evenements.create');
+    Route::post('/evenements', [EvenementController::class, 'store'])->name('evenements.store');
+    Route::get('/evenements/{evenement}', [EvenementController::class, 'show'])->name('evenements.show');
+  
+  
     // Commandes, Livraisons, Véhicules, Trajets (BackOffice CRUD)
     Route::resource('orders', \App\Http\Controllers\CommandeController::class)->parameters([
         'orders' => 'order'
@@ -130,11 +137,19 @@ Route::middleware(['auth'])->group(function () {
     // Le contrôle d'accès (role=partenaire) est géré dans le contrôleur
     Route::get('/commander', [\App\Http\Controllers\FrontOrderController::class, 'create'])->name('front.orders.create');
     Route::post('/commander', [\App\Http\Controllers\FrontOrderController::class, 'store'])->name('front.orders.store');
+
 });
+
+// Routes FrontOffice pour l'affichage des produits
+Route::get('/produits', [\App\Http\Controllers\ProductController::class, 'frontIndex'])->name('produits.index');
+Route::get('/produits/{product}', [\App\Http\Controllers\ProductController::class, 'frontShow'])->name('produits.show');
+Route::get('/produits/categorie/{categorie}', [\App\Http\Controllers\ProductController::class, 'frontByCategory'])->name('produits.category');
 
 
 // Route publique pour envoyer la demande de partenariat
     Route::post('/demande-partenariat', [PartenaireDemandeController::class, 'store'])
     ->name('demande.partenariat.store');
+
+Route::post('/demande/{id}/send-test-email', [PartenaireDemandeController::class, 'sendTestEmail'])->name('demande.sendTestEmail');
 // Routes auth (login, register, password, etc.)
 require __DIR__.'/auth.php';

@@ -54,7 +54,12 @@
                 <span class="sidebar-nav-text">Orders</span>
             </a>
         </div>
-
+        <div class="sidebar-nav-item">
+            <a href="{{ route('evenements.index') }}" class="sidebar-nav-link {{ request()->routeIs('evenements.*') ? 'active' : '' }}">
+            <i class="fas fa-calendar-alt sidebar-nav-icon"></i>
+            <span class="sidebar-nav-text">Evenements</span>
+            </a>
+        </div>
         <div class="sidebar-nav-item">
             <a href="{{ route('livraisons.index') }}" class="sidebar-nav-link {{ request()->routeIs('livraisons.*') ? 'active' : '' }}">
                 <i class="fas fa-truck sidebar-nav-icon"></i>
