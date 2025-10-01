@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PartenaireDemandeController;
+use App\Http\Controllers\EvenementController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -98,6 +99,12 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/products/search', [\App\Http\Controllers\ProductController::class, 'search'])->name('products.search');
     Route::patch('/products/{product}/stock', [\App\Http\Controllers\ProductController::class, 'updateStock'])->name('products.updateStock');
 
+
+    //Routes CRUD pour les Événements (BackOffice)
+    Route::get('/evenements', [EvenementController::class, 'index'])->name('evenements.index');
+    Route::get('/evenements/create', [EvenementController::class, 'create'])->name('evenements.create');
+    Route::post('/evenements', [EvenementController::class, 'store'])->name('evenements.store');
+    Route::get('/evenements/{evenement}', [EvenementController::class, 'show'])->name('evenements.show');
 });
 
 // Routes FrontOffice pour l'affichage des produits
