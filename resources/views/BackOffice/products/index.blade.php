@@ -1,77 +1,75 @@
 @extends('layouts.backoffice')
 
-@section('title', ' - Products Management')
+@section('title', 'Produits')
 
 @section('content')
     <div class="dashboard-header">
         <div class="dashboard-header-content">
-            <h1 class="dashboard-title">Products Management</h1>
-            <p class="dashboard-subtitle">Manage waste products and their categories</p>
+            <h1 class="dashboard-title">Gestion des produits</h1>
+            <p class="dashboard-subtitle">Gérer les produits recyclés et non recyclés</p>
         </div>
         <div class="dashboard-header-actions">
-            <button class="btn btn-primary">
+            <a href="{{ route('produits.create') }}" class="btn btn-primary">
                 <i class="fas fa-plus"></i>
-                <span>Add Product</span>
-            </button>
+                <span>Nouveau produit</span>
+            </a>
         </div>
     </div>
 
     <div class="dashboard-content">
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">All Products</h3>
-                <div class="card-actions">
-                    <div class="search-box">
-                        <i class="fas fa-search"></i>
-                        <input type="text" placeholder="Search products..." class="search-input">
-                    </div>
-                </div>
+                <h3 class="card-title">Tous les produits</h3>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
                     <table class="table">
                         <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Name</th>
-                                <th>Category</th>
-                                <th>Price</th>
-                                <th>Stock</th>
-                                <th>Status</th>
-                                <th>Created</th>
-                                <th>Actions</th>
-                            </tr>
+                        <tr>
+                            <th>#</th>
+                            <th>Image</th>
+                            <th>Nom</th>
+                            <th>Catégorie</th>
+                            <th>Prix</th>
+                            <th>Stock</th>
+                            <th>Type</th>
+                            <th></th>
+                        </tr>
                         </thead>
                         <tbody>
+                        @forelse($produits as $p)
                             <tr>
-                                <td>1</td>
-                                <td>Recycled Paper</td>
-                                <td>Paper</td>
-                                <td>$5.00</td>
-                                <td>100</td>
-                                <td><span class="badge bg-success">Active</span></td>
-                                <td>2024-01-15</td>
+                                <td>{{ $p->id }}</td>
                                 <td>
-                                    <button class="btn btn-sm btn-outline-primary">Edit</button>
-                                    <button class="btn btn-sm btn-outline-danger">Delete</button>
+                                    @if($p->image_url)
+                                        <img src="{{ $p->image_url }}" alt="{{ $p->nom }}" style="height:48px;width:auto">
+                                    @else
+                                        <span class="text-muted">—</span>
+                                    @endif
+                                </td>
+                                <td><a href="{{ route('produits.show', $p) }}" class="link">{{ $p->nom }}</a></td>
+                                <td>{{ optional($p->categorie)->libelle }}</td>
+                                <td>{{ number_format($p->prix_base, 2) }} DT</td>
+                                <td>{{ $p->stock }}</td>
+                                <td>{{ $p->type }}</td>
+                                <td class="text-right">
+                                    <a href="{{ route('produits.edit', $p) }}" class="btn btn-sm">Edit</a>
+                                    <form action="{{ route('produits.destroy', $p) }}" method="POST" class="inline">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button class="btn btn-sm btn-danger" onclick="return confirm('Supprimer ce produit ?')">Supprimer</button>
+                                    </form>
                                 </td>
                             </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>Plastic Bottles</td>
-                                <td>Plastic</td>
-                                <td>$2.50</td>
-                                <td>250</td>
-                                <td><span class="badge bg-success">Active</span></td>
-                                <td>2024-01-20</td>
-                                <td>
-                                    <button class="btn btn-sm btn-outline-primary">Edit</button>
-                                    <button class="btn btn-sm btn-outline-danger">Delete</button>
-                                </td>
-                            </tr>
+                        @empty
+                            <tr><td colspan="7" class="text-center">Aucun produit</td></tr>
+                        @endforelse
                         </tbody>
                     </table>
                 </div>
+                @if(method_exists($produits, 'links'))
+                    <div class="mt-4">{{ $produits->links() }}</div>
+                @endif
             </div>
         </div>
     </div>

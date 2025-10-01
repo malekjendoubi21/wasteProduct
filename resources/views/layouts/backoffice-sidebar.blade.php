@@ -28,7 +28,7 @@
         </div>
 
         <div class="sidebar-nav-item">
-            <a href="{{ route('products.index') }}" class="sidebar-nav-link {{ request()->routeIs('products.*') ? 'active' : '' }}">
+            <a href="{{ route('produits.index') }}" class="sidebar-nav-link {{ request()->routeIs('produits.*') ? 'active' : '' }}">
                 <i class="fas fa-box sidebar-nav-icon"></i>
                 <span class="sidebar-nav-text">Products</span>
             </a>
@@ -42,9 +42,16 @@
         </div>
 
         <div class="sidebar-nav-item">
-            <a href="{{ route('orders.index') }}" class="sidebar-nav-link {{ request()->routeIs('orders.*') ? 'active' : '' }}">
+            <a href="{{ route('commandes.index') }}" class="sidebar-nav-link {{ request()->routeIs('commandes.*') ? 'active' : '' }}">
                 <i class="fas fa-shopping-cart sidebar-nav-icon"></i>
                 <span class="sidebar-nav-text">Orders</span>
+            </a>
+        </div>
+
+        <div class="sidebar-nav-item">
+            <a href="{{ route('livraisons.index') }}" class="sidebar-nav-link {{ request()->routeIs('livraisons.*') ? 'active' : '' }}">
+                <i class="fas fa-truck sidebar-nav-icon"></i>
+                <span class="sidebar-nav-text">Deliveries</span>
             </a>
         </div>
 

@@ -9,10 +9,10 @@
             <p class="dashboard-subtitle">Manage product categories and classifications</p>
         </div>
         <div class="dashboard-header-actions">
-            <button class="btn btn-primary">
+            <a href="{{ route('categories.create') }}" class="btn btn-primary">
                 <i class="fas fa-plus"></i>
                 <span>Add Category</span>
-            </button>
+            </a>
         </div>
     </div>
 
@@ -33,43 +33,48 @@
                         <thead>
                             <tr>
                                 <th>ID</th>
+                                <th>Image</th>
                                 <th>Name</th>
-                                <th>Description</th>
                                 <th>Products Count</th>
-                                <th>Status</th>
                                 <th>Created</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>Paper</td>
-                                <td>Recycled paper products</td>
-                                <td>15</td>
-                                <td><span class="badge bg-success">Active</span></td>
-                                <td>2024-01-15</td>
-                                <td>
-                                    <button class="btn btn-sm btn-outline-primary">Edit</button>
-                                    <button class="btn btn-sm btn-outline-danger">Delete</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>Plastic</td>
-                                <td>Recycled plastic products</td>
-                                <td>23</td>
-                                <td><span class="badge bg-success">Active</span></td>
-                                <td>2024-01-20</td>
-                                <td>
-                                    <button class="btn btn-sm btn-outline-primary">Edit</button>
-                                    <button class="btn btn-sm btn-outline-danger">Delete</button>
-                                </td>
-                            </tr>
+                            @forelse($categories as $c)
+                                <tr>
+                                    <td>{{ $c->id }}</td>
+                                    <td>
+                                        @if($c->image_url)
+                                            <img src="{{ $c->image_url }}" alt="{{ $c->libelle }}" style="height:48px;width:auto">
+                                        @else
+                                            <span class="text-muted">—</span>
+                                        @endif
+                                    </td>
+                                    <td>{{ $c->libelle }}</td>
+                                    <td>{{ $c->produits_count }}</td>
+                                    <td>{{ optional($c->date_creation ?? $c->created_at)->format('Y-m-d') }}</td>
+                                    <td>
+                                        <a href="{{ route('categories.edit', $c) }}" class="btn btn-sm btn-outline-primary">Edit</a>
+                                        <form action="{{ route('categories.destroy', $c) }}" method="POST" class="inline">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button class="btn btn-sm btn-outline-danger" onclick="return confirm('Delete this category?')">Delete</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="5" class="text-center">No categories</td>
+                                </tr>
+                            @endforelse
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
     </div>
+    @if(method_exists($categories, 'links'))
+        <div class="mt-4">{{ $categories->links() }}</div>
+    @endif
 @endsection

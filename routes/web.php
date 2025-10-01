@@ -1,6 +1,21 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProduitController;
+use App\Http\Controllers\CategorieController;
+use App\Http\Controllers\CommandeController;
+use App\Http\Controllers\PanierController;
+use App\Http\Controllers\PanierProduitController;
+use App\Http\Controllers\DonationController;
+use App\Http\Controllers\AssociationController;
+use App\Http\Controllers\EvenementController;
+use App\Http\Controllers\ParticipationController;
+use App\Http\Controllers\VehiculeController;
+use App\Http\Controllers\TrajetController;
+use App\Http\Controllers\StockController;
+use App\Http\Controllers\TacheController;
+use App\Http\Controllers\LivraisonController;
+use App\Http\Controllers\ContratController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -50,37 +65,52 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/password', [ProfileController::class, 'updatePassword'])->name('password.update');
 });
 
-// Routes protégées pour les admins uniquement
-Route::middleware(['auth', 'admin'])->group(function () {
-    Route::get('/admin', function () {
+// Routes protégées pour les admins uniquement (préfixées par /admin)
+Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
+    Route::get('/', function () {
         return view('BackOffice.dashboard.dashboard');
     })->name('admin.dashboard');
     
-    // Admin resource routes - using simple closures for now
+    // BackOffice Users page (placeholder)
     Route::get('/users', function () {
         return view('BackOffice.users.index');
     })->name('users.index');
-    
-    Route::get('/products', function () {
-        return view('BackOffice.products.index');
-    })->name('products.index');
-    
-    Route::get('/categories', function () {
-        return view('BackOffice.categories.index');
-    })->name('categories.index');
-    
-    Route::get('/orders', function () {
-        return view('BackOffice.orders.index');
-    })->name('orders.index');
-    
+
+    // BackOffice Reports page (placeholder)
     Route::get('/reports', function () {
         return view('BackOffice.reports.index');
     })->name('reports.index');
-    
+
+    // BackOffice Settings page (placeholder)
     Route::get('/settings', function () {
         return view('BackOffice.settings.index');
     })->name('settings.index');
+    
+    // Admin resources
+    Route::resources([
+        'produits' => ProduitController::class,
+        'categories' => CategorieController::class,
+        'commandes' => CommandeController::class,
+        'paniers' => PanierController::class,
+        'panier-items' => PanierProduitController::class,
+        'donations' => DonationController::class,
+        'associations' => AssociationController::class,
+        'evenements' => EvenementController::class,
+        'participations' => ParticipationController::class,
+        'vehicules' => VehiculeController::class,
+        'trajets' => TrajetController::class,
+        'stocks' => StockController::class,
+        'taches' => TacheController::class,
+        'livraisons' => LivraisonController::class,
+        'contrats' => ContratController::class,
+    ]);
 });
 
 // Routes auth (login, register, password, etc.)
 require __DIR__.'/auth.php';
+
+// Front browse routes
+Route::get('/catalogue', [ProduitController::class, 'index'])->name('catalogue');
+Route::get('/produits/{produit}', [ProduitController::class, 'show'])->name('produits.show.public');
+Route::get('/events', [EvenementController::class, 'index'])->name('events');
+Route::get('/events/{evenement}', [EvenementController::class, 'show'])->name('events.show');
