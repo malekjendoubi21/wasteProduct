@@ -70,9 +70,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
         return view('BackOffice.categories.index');
     })->name('categories.index');
     
-    Route::get('/orders', function () {
-        return view('BackOffice.orders.index');
-    })->name('orders.index');
+    // Orders routes managed by CommandeController below
     
     Route::get('/reports', function () {
         return view('BackOffice.reports.index');
@@ -98,12 +96,36 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/products/search', [\App\Http\Controllers\ProductController::class, 'search'])->name('products.search');
     Route::patch('/products/{product}/stock', [\App\Http\Controllers\ProductController::class, 'updateStock'])->name('products.updateStock');
 
+    // Commandes, Livraisons, Véhicules, Trajets (BackOffice CRUD)
+    Route::resource('orders', \App\Http\Controllers\CommandeController::class)->parameters([
+        'orders' => 'order'
+    ]);
+    Route::resource('livraisons', \App\Http\Controllers\LivraisonController::class);
+    Route::resource('vehicules', \App\Http\Controllers\VehiculeController::class);
+    Route::resource('trajets', \App\Http\Controllers\TrajetController::class);
+
 });
 
 // Routes FrontOffice pour l'affichage des produits
 Route::get('/produits', [\App\Http\Controllers\ProductController::class, 'frontIndex'])->name('produits.index');
 Route::get('/produits/{product}', [\App\Http\Controllers\ProductController::class, 'frontShow'])->name('produits.show');
 Route::get('/produits/categorie/{categorie}', [\App\Http\Controllers\ProductController::class, 'frontByCategory'])->name('produits.category');
+
+// Routes FrontOffice pour les commandes (client)
+Route::middleware(['auth'])->group(function () {
+    Route::get('/mes-commandes', function () {
+        $user = \Illuminate\Support\Facades\Auth::user();
+        $commandes = \App\Models\Commande::where('id_utilisateur', $user->id)->orderByDesc('date')->paginate(10);
+        return view('FrontOffice.orders.index', compact('commandes'));
+    })->name('front.orders.index');
+
+    Route::get('/mes-commandes/{commande}', function (\App\Models\Commande $commande) {
+        $userId = \Illuminate\Support\Facades\Auth::id();
+        abort_unless($commande->id_utilisateur === $userId, 403);
+        $commande->load('product', 'livraisons.trajet.vehicule');
+        return view('FrontOffice.orders.show', compact('commande'));
+    })->name('front.orders.show');
+});
 
 
 // Route publique pour envoyer la demande de partenariat

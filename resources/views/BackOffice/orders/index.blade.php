@@ -5,70 +5,73 @@
 @section('content')
     <div class="dashboard-header">
         <div class="dashboard-header-content">
-            <h1 class="dashboard-title">Orders Management</h1>
-            <p class="dashboard-subtitle">Track and manage customer orders</p>
+            <h1 class="dashboard-title">Gestion des Commandes</h1>
+            <p class="dashboard-subtitle">Suivre et gérer les commandes clients</p>
         </div>
         <div class="dashboard-header-actions">
-            <button class="btn btn-primary">
-                <i class="fas fa-download"></i>
-                <span>Export Orders</span>
-            </button>
+            <a href="{{ route('orders.create') }}" class="btn btn-primary">
+                <i class="fas fa-plus"></i>
+                <span>Nouvelle Commande</span>
+            </a>
         </div>
     </div>
 
     <div class="dashboard-content">
+        @if(session('success'))
+            <div class="alert alert-success">
+                <i class="fas fa-check-circle"></i> {{ session('success') }}
+            </div>
+        @endif
+
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">All Orders</h3>
-                <div class="card-actions">
-                    <div class="search-box">
-                        <i class="fas fa-search"></i>
-                        <input type="text" placeholder="Search orders..." class="search-input">
-                    </div>
-                </div>
+                <h3 class="card-title">Toutes les Commandes</h3>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
                     <table class="table">
                         <thead>
                             <tr>
-                                <th>Order ID</th>
-                                <th>Customer</th>
-                                <th>Products</th>
-                                <th>Total</th>
-                                <th>Status</th>
+                                <th>ID</th>
+                                <th>Client</th>
+                                <th>Montant</th>
+                                <th>Produit</th>
+                                <th>Qté</th>
                                 <th>Date</th>
+                                <th>Livraisons</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>#ORD-001</td>
-                                <td>John Doe</td>
-                                <td>3 items</td>
-                                <td>$25.50</td>
-                                <td><span class="badge bg-success">Completed</span></td>
-                                <td>2024-01-15</td>
-                                <td>
-                                    <button class="btn btn-sm btn-outline-primary">View</button>
-                                    <button class="btn btn-sm btn-outline-warning">Edit</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>#ORD-002</td>
-                                <td>Jane Smith</td>
-                                <td>2 items</td>
-                                <td>$15.00</td>
-                                <td><span class="badge bg-warning">Pending</span></td>
-                                <td>2024-01-20</td>
-                                <td>
-                                    <button class="btn btn-sm btn-outline-primary">View</button>
-                                    <button class="btn btn-sm btn-outline-warning">Edit</button>
-                                </td>
-                            </tr>
+                            @forelse($commandes as $commande)
+                                <tr>
+                                    <td>#{{ $commande->id }}</td>
+                                    <td>{{ optional($commande->utilisateur)->name }}</td>
+                                    <td>{{ number_format($commande->montant, 2, ',', ' ') }} €</td>
+                                    <td>{{ optional($commande->product)->nom }}</td>
+                                    <td>{{ $commande->quantity }}</td>
+                                    <td>{{ optional($commande->date)->format('Y-m-d H:i') }}</td>
+                                    <td>{{ $commande->livraisons()->count() }}</td>
+                                    <td>
+                                        <a href="{{ route('orders.show', $commande) }}" class="btn btn-sm btn-outline-primary">Voir</a>
+                                        <a href="{{ route('orders.edit', $commande) }}" class="btn btn-sm btn-outline-warning">Modifier</a>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="6" class="text-center py-4">Aucune commande trouvée.</td>
+                                </tr>
+                            @endforelse
                         </tbody>
                     </table>
                 </div>
+                @isset($commandes)
+                    @if($commandes instanceof \Illuminate\Contracts\Pagination\Paginator || $commandes instanceof \Illuminate\Contracts\Pagination\LengthAwarePaginator)
+                        <div class="d-flex justify-content-center mt-4">
+                            {{ $commandes->links() }}
+                        </div>
+                    @endif
+                @endisset
             </div>
         </div>
     </div>
