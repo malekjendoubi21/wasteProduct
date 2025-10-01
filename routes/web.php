@@ -89,7 +89,21 @@ Route::middleware(['auth', 'admin'])->group(function () {
     // Mettre à jour le statut (Accepter / Refuser)
     Route::patch('/demande-partenariat/{id}/status', [PartenaireDemandeController::class, 'updateStatus'])->name('demande.updateStatus');
 
+    // Routes CRUD pour les Catégories (BackOffice)
+    Route::resource('categories', \App\Http\Controllers\CatégorieController::class);
+    Route::get('/categories/search', [\App\Http\Controllers\CatégorieController::class, 'search'])->name('categories.search');
+
+    // Routes CRUD pour les Produits (BackOffice) 
+    Route::resource('products', \App\Http\Controllers\ProductController::class);
+    Route::get('/products/search', [\App\Http\Controllers\ProductController::class, 'search'])->name('products.search');
+    Route::patch('/products/{product}/stock', [\App\Http\Controllers\ProductController::class, 'updateStock'])->name('products.updateStock');
+
 });
+
+// Routes FrontOffice pour l'affichage des produits
+Route::get('/produits', [\App\Http\Controllers\ProductController::class, 'frontIndex'])->name('produits.index');
+Route::get('/produits/{product}', [\App\Http\Controllers\ProductController::class, 'frontShow'])->name('produits.show');
+Route::get('/produits/categorie/{categorie}', [\App\Http\Controllers\ProductController::class, 'frontByCategory'])->name('produits.category');
 
 
 // Route publique pour envoyer la demande de partenariat
