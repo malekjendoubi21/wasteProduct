@@ -125,6 +125,11 @@ Route::middleware(['auth'])->group(function () {
         $commande->load('product', 'livraisons.trajet.vehicule');
         return view('FrontOffice.orders.show', compact('commande'));
     })->name('front.orders.show');
+
+    // Création d'une commande par un partenaire (FrontOffice)
+    // Le contrôle d'accès (role=partenaire) est géré dans le contrôleur
+    Route::get('/commander', [\App\Http\Controllers\FrontOrderController::class, 'create'])->name('front.orders.create');
+    Route::post('/commander', [\App\Http\Controllers\FrontOrderController::class, 'store'])->name('front.orders.store');
 });
 
 

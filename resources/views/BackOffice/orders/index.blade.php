@@ -53,8 +53,21 @@
                                     <td>{{ optional($commande->date)->format('Y-m-d H:i') }}</td>
                                     <td>{{ $commande->livraisons()->count() }}</td>
                                     <td>
-                                        <a href="{{ route('orders.show', $commande) }}" class="btn btn-sm btn-outline-primary">Voir</a>
-                                        <a href="{{ route('orders.edit', $commande) }}" class="btn btn-sm btn-outline-warning">Modifier</a>
+                                        <div class="d-flex align-items-center gap-2">
+                                            <a href="{{ route('orders.show', $commande) }}" class="btn btn-sm btn-outline-success" title="Voir">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                            <a href="{{ route('orders.edit', $commande) }}" class="btn btn-sm btn-outline-warning" title="Modifier">
+                                                <i class="fas fa-pen"></i>
+                                            </a>
+                                            <form action="{{ route('orders.destroy', $commande) }}" method="POST" class="d-inline" onsubmit="return confirm('Supprimer cette commande ?');">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-sm btn-outline-danger" title="Supprimer">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </form>
+                                        </div>
                                     </td>
                                 </tr>
                             @empty

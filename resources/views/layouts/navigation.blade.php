@@ -34,6 +34,22 @@
                 <i class="fas fa-envelope"></i>
                 <span>Contact</span>
             </a></li>
+            @auth
+                @if(auth()->user()->role === 'partenaire')
+                    <li>
+                        <a href="{{ route('front.orders.create') }}" class="nav-link {{ request()->routeIs('front.orders.create') ? 'active' : '' }}">
+                            <i class="fas fa-cart-plus"></i>
+                            <span>Commander</span>
+                        </a>
+                    </li>
+                @endif
+                <li>
+                    <a href="{{ route('front.orders.index') }}" class="nav-link {{ request()->routeIs('front.orders.*') ? 'active' : '' }}">
+                        <i class="fas fa-clipboard-list"></i>
+                        <span>Mes commandes</span>
+                    </a>
+                </li>
+            @endauth
         </ul>
 
         <!-- User Menu -->
@@ -66,10 +82,12 @@
                         
                         <div class="dropdown-divider"></div>
                         
-                        <form method="POST" action="{{ route('logout') }}" class="dropdown-item">
+                        <form method="POST" action="{{ route('logout') }}">
                             @csrf
-                            <i class="fas fa-sign-out-alt"></i>
-                            <span>Logout</span>
+                            <button type="submit" class="dropdown-item">
+                                <i class="fas fa-sign-out-alt"></i>
+                                <span>Logout</span>
+                            </button>
                         </form>
                     </div>
                 </div>
@@ -145,10 +163,12 @@
                         
                         <div class="dropdown-divider"></div>
                         
-                        <form method="POST" action="{{ route('logout') }}" class="dropdown-item">
+                        <form method="POST" action="{{ route('logout') }}">
                             @csrf
-                            <i class="fas fa-sign-out-alt"></i>
-                            <span>Logout</span>
+                            <button type="submit" class="dropdown-item">
+                                <i class="fas fa-sign-out-alt"></i>
+                                <span>Logout</span>
+                            </button>
                         </form>
                     </div>
                 </div>
