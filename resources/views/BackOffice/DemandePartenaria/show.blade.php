@@ -21,11 +21,11 @@
                 <p><strong>Logo :</strong>
                     @if($demande->logo)
                         @php
-                            // Supprime le préfixe 'storage/' si présent pour éviter la duplication
-                            $logoPath = str_replace('storage/', '', $demande->logo);
+                            // Ajuste le chemin pour utiliser uniquement le nom de fichier après 'images/'
+                            $logoPath = str_replace('images/', '', $demande->logo);
                         @endphp
-                        <img src="{{ asset('storage/' . $logoPath) }}" alt="Logo" width="100" 
-                             onerror="this.src='{{ asset('images/default-logo.png') }}'; this.alt='Logo par défaut';">
+                        <img src="{{ asset('images/' . $logoPath) }}" alt="Logo" width="100" 
+                             onerror="this.onerror=null; this.src='{{ asset('images/default-logo.png') }}'; this.alt='Logo par défaut';">
                     @else
                         N/A
                     @endif

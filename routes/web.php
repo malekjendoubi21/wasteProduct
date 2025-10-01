@@ -95,5 +95,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
 // Route publique pour envoyer la demande de partenariat
     Route::post('/demande-partenariat', [PartenaireDemandeController::class, 'store'])
     ->name('demande.partenariat.store');
+
+Route::post('/demande/{id}/send-test-email', [PartenaireDemandeController::class, 'sendTestEmail'])->name('demande.sendTestEmail');
 // Routes auth (login, register, password, etc.)
 require __DIR__.'/auth.php';
