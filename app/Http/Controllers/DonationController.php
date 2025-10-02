@@ -29,6 +29,38 @@ class DonationController extends Controller
         return view('FrontOffice.donations.index', compact('donations'));
     }
 
+     /**
+     * Display the list of all donations for admins (BackOffice).
+     */
+    public function adminIndex(): View
+    {
+        // Restrict to admins only
+        if (Auth::user()->role !== 'admin') {
+            abort(403, 'Action non autorisée.');
+        }
+
+        $donations = Donation::with(['association', 'items.product', 'user'])
+            ->orderBy('date', 'desc')
+            ->paginate(10);
+
+        return view('BackOffice.donations.index', compact('donations'));
+    }
+
+    /**
+     * Display the details of a specific donation for admins (BackOffice).
+     */
+    public function show(Donation $donation): View
+    {
+        // Restrict to admins only
+        if (Auth::user()->role !== 'admin') {
+            abort(403, 'Action non autorisée.');
+        }
+
+        $donation->load(['association', 'user', 'items.product']);
+
+        return view('BackOffice.donations.show', compact('donation'));
+    }
+
     /**
      * Show the form to create a new donation for a product.
      */

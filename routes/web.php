@@ -75,6 +75,10 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin', function () {
         return view('BackOffice.dashboard.dashboard');
     })->name('admin.dashboard');
+
+    // BackOffice donation routes
+    Route::get('/admin/donations', [DonationController::class, 'adminIndex'])->name('admin.donations.index');
+    Route::get('/admin/donations/{donation}', [DonationController::class, 'show'])->name('admin.donations.show');
     
     // Admin resource routes - using simple closures for now
     Route::get('/users', function () {
