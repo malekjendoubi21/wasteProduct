@@ -133,6 +133,19 @@ Route::middleware(['auth'])->group(function () {
         return view('FrontOffice.orders.show', compact('commande'));
     })->name('front.orders.show');
 
+    // Notifications: mark all as read
+    Route::post('/notifications/read-all', function () {
+        $user = \Illuminate\Support\Facades\Auth::user();
+        if ($user) {
+            $user->unreadNotifications->markAsRead();
+        }
+        return back();
+    })->name('notifications.readAll');
+
+    // Notifications pages
+    Route::get('/notifications', [\App\Http\Controllers\NotificationController::class, 'index'])->name('notifications.index');
+    Route::get('/notifications/{id}', [\App\Http\Controllers\NotificationController::class, 'show'])->name('notifications.show');
+
     // Création d'une commande par un partenaire (FrontOffice)
     // Le contrôle d'accès (role=partenaire) est géré dans le contrôleur
     Route::get('/commander', [\App\Http\Controllers\FrontOrderController::class, 'create'])->name('front.orders.create');

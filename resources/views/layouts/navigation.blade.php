@@ -35,14 +35,12 @@
                 <span>Contact</span>
             </a></li>
             @auth
-                @if(auth()->user()->role === 'partenaire')
-                    <li>
-                        <a href="{{ route('front.orders.create') }}" class="nav-link {{ request()->routeIs('front.orders.create') ? 'active' : '' }}">
-                            <i class="fas fa-cart-plus"></i>
-                            <span>Commander</span>
-                        </a>
-                    </li>
-                @endif
+                <li>
+                    <a href="{{ route('front.orders.create') }}" class="nav-link {{ request()->routeIs('front.orders.create') ? 'active' : '' }}">
+                        <i class="fas fa-cart-plus"></i>
+                        <span>Commander</span>
+                    </a>
+                </li>
                 <li>
                     <a href="{{ route('front.orders.index') }}" class="nav-link {{ request()->routeIs('front.orders.*') ? 'active' : '' }}">
                         <i class="fas fa-clipboard-list"></i>
@@ -55,6 +53,23 @@
         <!-- User Menu -->
         <div class="navbar-user">
             @auth
+                @php(
+                    $hasNotificationsTable = \Illuminate\Support\Facades\Schema::hasTable('notifications')
+                )
+                @php(
+                    $unread = $hasNotificationsTable ? auth()->user()->unreadNotifications()->limit(5)->get() : collect()
+                )
+                @php(
+                    $unreadCount = $hasNotificationsTable ? auth()->user()->unreadNotifications()->count() : 0
+                )
+                <div class="dropdown me-3">
+                    <a href="{{ route('notifications.index') }}" class="dropdown-toggle user-profile-link" title="Notifications">
+                        <i class="fas fa-bell"></i>
+                        @if($unreadCount > 0)
+                            <span class="badge bg-danger" style="position:relative; top:-10px; left:-10px;">{{ $unreadCount }}</span>
+                        @endif
+                    </a>
+                </div>
                 <div class="dropdown">
                     <a href="{{ route('profile.show') }}" class="dropdown-toggle user-profile-link">
                         <div class="user-avatar">
