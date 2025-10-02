@@ -1,4 +1,3 @@
-```blade
 @extends('layouts.app')
 
 @section('title', 'Mes dons')
@@ -449,4 +448,3 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 @endpush
-```
