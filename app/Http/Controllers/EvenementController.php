@@ -67,8 +67,67 @@ class EvenementController extends Controller
 }
 
     // Affichage d'un événement
+    
     public function show(Evenement $evenement)
+{
+    $evenement->load('participations.user'); // Eager load participations and their users
+    return view('BackOffice.evenements.show', compact('evenement'));
+}
+
+    // Formulaire d'édition
+    public function edit(Evenement $evenement)
     {
-        return view('BackOffice.evenements.show', compact('evenement'));
+        return view('BackOffice.evenements.edit', compact('evenement'));
     }
+
+    // Mise à jour d'un événement
+    public function update(Request $request, Evenement $evenement)
+    {
+        $validated = $request->validate([
+            'titre' => 'required|string|max:255',
+            'description' => 'required|string',
+            'date_debut' => 'required|date',
+            'date_fin' => 'required|date|after_or_equal:date_debut',
+            'lieu' => 'required|string|max:255',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+        // Gestion de l'image
+        if ($request->hasFile('image')) {
+            // Supprimer l'ancienne image si elle existe
+            if ($evenement->image && file_exists(public_path($evenement->image))) {
+                unlink(public_path($evenement->image));
+            }
+
+            $file = $request->file('image');
+            $filename = Str::slug($request->titre) . '_' . time() . '.' . $file->getClientOriginalExtension();
+            $directory = public_path('images/evenements');
+            if (!file_exists($directory)) {
+                mkdir($directory, 0755, true);
+            }
+            $path = $file->move($directory, $filename);
+            if ($path) {
+                $validated['image'] = 'images/evenements/' . $filename;
+            }
+        }
+
+        $evenement->update($validated);
+
+        return redirect()->route('evenements.index')->with('success', 'Événement mis à jour avec succès !');
+    }
+
+    // Suppression d'un événement
+    public function destroy(Evenement $evenement)
+    {
+        // Supprimer l'image associée si elle existe
+        if ($evenement->image && file_exists(public_path($evenement->image))) {
+            unlink(public_path($evenement->image));
+        }
+
+        $evenement->delete();
+
+        return redirect()->route('evenements.index')->with('success', 'Événement supprimé avec succès !');
+    }
+
+
 }

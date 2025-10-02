@@ -75,11 +75,8 @@
                                         <form action="{{ route('demande.updateStatus', $demande->id) }}" method="POST" style="display:inline-block;">
                                             @csrf
                                             @method('PATCH')
-                                            <div>
-                                                <input type="hidden" name="statut" value="accepte">
-                                                <input type="password" name="custom_password" placeholder="Mot de passe" class="form-control mb-2" required>
-                                                <button type="submit" class="btn btn-sm btn-outline-success">Accepter</button>
-                                            </div>
+                                            <input type="hidden" name="statut" value="accepte">
+                                            <button type="submit" class="btn btn-sm btn-outline-success">Accepter</button>
                                         </form>
                                         <form action="{{ route('demande.updateStatus', $demande->id) }}" method="POST" style="display:inline-block;">
                                             @csrf
@@ -87,10 +84,7 @@
                                             <input type="hidden" name="statut" value="refuse">
                                             <button type="submit" class="btn btn-sm btn-outline-danger">Refuser</button>
                                         </form>
-                                        <form action="{{ route('demande.sendTestEmail', $demande->id) }}" method="POST" style="display:inline-block;">
-                                            @csrf
-                                            <button type="submit" class="btn btn-sm btn-outline-info">Tester l'email</button>
-                                        </form>
+                                        <!-- "Tester l'email" button removed since email sending is disabled -->
                                     </td>
                                 </tr>
                             @endforeach
