@@ -183,6 +183,8 @@
             </p>
         </div>
 
+        
+
         <div class="partners-slider">
             <div class="partners-track d-flex flex-wrap justify-content-center gap-4">
                 <!-- Logos partenaires -->
@@ -198,6 +200,7 @@
                 @endforeach
             </div>
         </div>
+
 
         <!-- Bouton pour afficher le formulaire -->
         <div class="partner-cta text-center mt-4">

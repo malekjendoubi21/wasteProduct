@@ -13,6 +13,7 @@ use App\Http\Controllers\DonationController;
 |--------------------------------------------------------------------------
 */
 
+
 // Page d'accueil publique
 Route::get('/', function () {
     return view('FrontOffice.home.home');

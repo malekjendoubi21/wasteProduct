@@ -41,7 +41,7 @@ class AssociationController extends Controller
     public function frontIndex(): View
     {
         $associations = Association::active()->orderBy('name')->paginate(10);
-        return view('FrontOffice.associations.index', compact('associations'));
+        return view('FrontOffice.home.home', compact('associations'));
     }
 
     public function frontShow(Association $association): View
