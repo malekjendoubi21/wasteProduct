@@ -22,7 +22,7 @@
                                 <a href="{{ route('login') }}" class="btn btn-outline-secondary btn-sm">Connectez-vous pour participer</a>
                             @endauth
                         </form>
-                        <a href="{{ route('evenements.listes') }}" class="btn btn-secondary mt-3">Retour à la liste</a>
+                        <a href="{{ route('evenement.listes') }}" class="btn btn-secondary mt-3">Retour à la liste</a>
                     </div>
                     <div class="col-md-4">
                         @if ($evenement->image)

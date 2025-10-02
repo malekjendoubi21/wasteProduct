@@ -30,7 +30,7 @@
                                         <a href="{{ route('login') }}" class="btn btn-outline-secondary btn-sm">Connectez-vous pour participer</a>
                                     @endauth
                                 </form>
-                                <a href="{{ route('evenements.show', $event->id) }}" class="btn btn-outline-primary btn-sm mt-2">Voir les détails</a>
+                                <a href="{{ route('evenement.show', $event->id) }}" class="btn btn-outline-primary btn-sm mt-2">Voir les détails</a>
                             </div>
                         </div>
                     </div>
