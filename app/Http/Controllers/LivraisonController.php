@@ -8,6 +8,9 @@ use App\Models\Trajet;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Notification;
+use App\Notifications\LivraisonCreated;
+use App\Notifications\LivraisonStatusUpdated;
 
 class LivraisonController extends Controller
 {
@@ -44,6 +47,12 @@ class LivraisonController extends Controller
         $livraison = Livraison::create($request->only([
             'id_commande','adresse_livraison','date_livraison','statut','id_trajet','id_utilisateur'
         ]));
+
+        // Notify commande owner
+        $livraison->load('commande.utilisateur');
+        if ($livraison->commande && $livraison->commande->utilisateur) {
+            Notification::send($livraison->commande->utilisateur, new LivraisonCreated($livraison));
+        }
         return redirect()->route('livraisons.show', $livraison)->with('success','Livraison créée.');
     }
 
@@ -72,7 +81,16 @@ class LivraisonController extends Controller
         ]);
         $validator->validate();
 
+        $oldStatut = $livraison->statut;
         $livraison->update($request->only(['adresse_livraison','date_livraison','statut','id_trajet','id_utilisateur']));
+
+        // If status changed, notify commande owner
+        if ($oldStatut !== $livraison->statut) {
+            $livraison->load('commande.utilisateur');
+            if ($livraison->commande && $livraison->commande->utilisateur) {
+                Notification::send($livraison->commande->utilisateur, new LivraisonStatusUpdated($livraison));
+            }
+        }
         return redirect()->route('livraisons.show', $livraison)->with('success','Livraison mise à jour.');
     }
 

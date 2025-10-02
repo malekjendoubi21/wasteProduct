@@ -12,16 +12,16 @@ class FrontOrderController extends Controller
 {
     public function create()
     {
-    $user = Auth::user();
-    abort_unless($user && $user->role === 'partenaire', 403);
+        $user = Auth::user();
+        abort_unless($user, 403);
         $products = Product::orderBy('nom')->get(['id','nom','prix_base']);
         return view('FrontOffice.orders.create', compact('products'));
     }
 
     public function store(Request $request)
     {
-    $user = Auth::user();
-    abort_unless($user && $user->role === 'partenaire', 403);
+        $user = Auth::user();
+        abort_unless($user, 403);
 
         $validator = Validator::make($request->all(), [
             'product_id' => 'required|exists:products,id',
