@@ -30,6 +30,15 @@
                     <i class="fas fa-cogs"></i>
                     <span>Services</span>
                 </a></li>
+                <li>
+    
+<li>
+    <a href="{{ route('evenement.listes') }}" 
+       class="nav-link {{ request()->routeIs('evenement.*') ? 'active' : '' }}">
+        <i class="fas fa-calendar-alt"></i>
+        <span>Événements</span>
+    </a>
+</li>
 
             <li><a href="{{ route('contact') }}" class="nav-link {{ request()->routeIs('contact') ? 'active' : '' }}">
                     <i class="fas fa-envelope"></i>

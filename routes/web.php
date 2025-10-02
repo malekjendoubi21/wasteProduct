@@ -6,6 +6,8 @@ use App\Http\Controllers\EvenementController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AssociationController; 
 use App\Http\Controllers\DonationController; 
+use App\Http\Controllers\EvenementFrontController; 
+
 
 /*
 |--------------------------------------------------------------------------
@@ -39,6 +41,10 @@ Route::get('/contact', function () {
 })->name('contact');
 
 
+// ✅ Routes publiques pour les événements
+Route::get('/evenement', [EvenementFrontController::class, 'listes'])->name('evenement.listes');
+Route::get('/evenement/{evenement}', [EvenementFrontController::class, 'show'])->name('evenement.show');
+
 
 // Routes protégées pour les utilisateurs connectés
 Route::middleware(['auth'])->group(function () {
@@ -66,9 +72,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/dons/{donation}/edit', [DonationController::class, 'edit'])->name('donations.edit');
     Route::patch('/dons/{donation}', [DonationController::class, 'update'])->name('donations.update');
     Route::delete('/dons/{donation}', [DonationController::class, 'destroy'])->name('donations.destroy');
-  
 
-});
+    
+  Route::post('/evenements/{evenement}/participate', [EvenementFrontController::class, 'participate'])->name('evenements.participate');
+    });
 
 // Routes protégées pour les admins uniquement
 Route::middleware(['auth', 'admin'])->group(function () {
@@ -132,7 +139,10 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/evenements/create', [EvenementController::class, 'create'])->name('evenements.create');
     Route::post('/evenements', [EvenementController::class, 'store'])->name('evenements.store');
     Route::get('/evenements/{evenement}', [EvenementController::class, 'show'])->name('evenements.show');
-  
+  // Routes pour édition, mise à jour et suppression
+Route::get('/evenements/{evenement}/edit', [EvenementController::class, 'edit'])->name('evenements.edit');
+Route::put('/evenements/{evenement}', [EvenementController::class, 'update'])->name('evenements.update');
+Route::delete('/evenements/{evenement}', [EvenementController::class, 'destroy'])->name('evenements.destroy');
   
     // Commandes, Livraisons, Véhicules, Trajets (BackOffice CRUD)
     Route::resource('orders', \App\Http\Controllers\CommandeController::class)->parameters([
