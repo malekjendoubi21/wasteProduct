@@ -37,6 +37,16 @@
                     </a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('associations.*') ? 'active' : '' }}" href="{{ route('associations.index') }}">
+                        <i class="bi bi-building me-1"></i>Associations
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('donations.*') ? 'active' : '' }}" href="{{ route('donations.index') }}">
+                        <i class="bi bi-gift me-1"></i>Donations
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="#">
                         <i class="bi bi-bar-chart me-1"></i>Statistiques
                     </a>

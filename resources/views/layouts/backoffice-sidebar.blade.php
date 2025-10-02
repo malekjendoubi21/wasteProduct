@@ -82,6 +82,22 @@
         </div>
 
         <div class="sidebar-nav-item">
+            <a href="{{ route('associations.index') }}" class="sidebar-nav-link {{ request()->routeIs('associations.*') ? 'active' : '' }}">
+                <i class="fas fa-building sidebar-nav-icon"></i>
+                <span class="sidebar-nav-text">Associations</span>
+            </a>
+        </div>
+
+        <div class="sidebar-nav-item">
+            <a href="{{ route('admin.donations.index') }}" class="sidebar-nav-link {{ request()->routeIs('admin.donations.*') ? 'active' : '' }}">
+                <i class="fas fa-gift sidebar-nav-icon"></i>
+                <span class="sidebar-nav-text">Donations</span>
+            </a>
+        </div>
+
+      
+
+        <div class="sidebar-nav-item">
             <a href="{{ route('reports.index') }}" class="sidebar-nav-link {{ request()->routeIs('reports.*') ? 'active' : '' }}">
                 <i class="fas fa-chart-bar sidebar-nav-icon"></i>
                 <span class="sidebar-nav-text">Reports</span>

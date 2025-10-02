@@ -50,8 +50,15 @@
                         @endif
                     </td>
                     <td>
-                        <a href="{{ route('evenements.show', $evenement->id) }}" class="btn btn-sm btn-outline-primary">Voir</a>
-                    </td>
+                    <a href="{{ route('evenements.show', $evenement) }}" class="btn btn-info btn-sm">Voir</a>
+                    <a href="{{ route('evenements.edit', $evenement) }}" class="btn btn-warning btn-sm">Modifier</a>
+
+                    <form action="{{ route('evenements.destroy', $evenement) }}" method="POST" style="display:inline-block;" onsubmit="return confirm('Voulez-vous vraiment supprimer cet événement ?');">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger btn-sm">Supprimer</button>
+                    </form>
+                </td>
                 </tr>
                 @endforeach
             </tbody>

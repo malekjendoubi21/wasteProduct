@@ -90,6 +90,12 @@ class Product extends Model
         return $this->belongsTo(\App\Models\Catégorie::class, 'categorie_id');
     }
 
+
+    // Nouvelle relation pour les items de donation
+    public function donationItems()
+    {
+        return $this->hasMany(DonationItem::class);
+    }
     /**
      * Scope pour filtrer par type.
      *

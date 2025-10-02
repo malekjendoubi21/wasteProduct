@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\DemandePartenariat;
 use Illuminate\Support\Str;
-
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\DemandePartenariatStatusMail;
 use App\Models\User;
@@ -99,12 +99,13 @@ class PartenaireDemandeController extends Controller
     // }
 
    
-    // Mettre à jour le statut
+   // Mettre à jour le statut
     public function updateStatus(Request $request, $id)
     {
         $demande = DemandePartenariat::findOrFail($id);
 
-        if (!in_array($request->statut, ['accepte', 'refuse'])) {
+        $validStatuses = ['accepte', 'refuse'];
+        if (!in_array($request->statut, $validStatuses)) {
             return redirect()->back()->with('error', 'Statut invalide.');
         }
 
@@ -116,23 +117,19 @@ class PartenaireDemandeController extends Controller
 
         try {
             if ($request->statut === 'accepte') {
-                $password = $request->input('custom_password'); // Récupérer le mot de passe personnalisé
-                if (!$password) {
-                    return redirect()->back()->with('error', 'Veuillez entrer un mot de passe.');
-                }
+                // Générer un mot de passe aléatoire
+                $password = Str::random(12); // Génère un mot de passe de 12 caractères
                 $user = User::create([
                     'name' => $demande->nom_organisation,
                     'email' => $demande->email_contact,
-                    'password' => bcrypt($password), // Utiliser le mot de passe fourni
+                    'password' => Hash::make($password),
                     'role' => 'partenaire',
                 ]);
+
+                session()->flash('success', 'Statut mis à jour et compte partenaire créé avec succès.');
             }
 
-            Mail::to($demande->email_contact)->send(
-                new DemandePartenariatStatusMail($demande, $request->statut, $password)
-            );
-
-            return redirect()->back()->with('success', 'Statut mis à jour et mail envoyé avec succès.');
+            return redirect()->back()->with('success', 'Statut mis à jour avec succès.');
         } catch (\Exception $e) {
             if ($user && $request->statut === 'accepte') {
                 $user->delete();
@@ -140,8 +137,8 @@ class PartenaireDemandeController extends Controller
                 $demande->save();
             }
 
-            \Log::error('Erreur d\'envoi de mail : ' . $e->getMessage());
-            return redirect()->back()->with('error', 'Statut mis à jour, mais erreur lors de l\'envoi du mail : ' . $e->getMessage());
+            \Log::error('Erreur lors de la création de compte : ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Statut mis à jour, mais erreur lors de la création du compte : ' . $e->getMessage());
         }
     }
 

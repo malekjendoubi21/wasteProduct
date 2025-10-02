@@ -86,4 +86,10 @@ class User extends Authenticatable
     {
         return $this->role === 'partenaire';
     }
+
+    // Nouvelle relation pour les donations
+    public function donations()
+    {
+        return $this->hasMany(Donation::class);
+    }
 }

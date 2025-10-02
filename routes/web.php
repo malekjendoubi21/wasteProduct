@@ -4,6 +4,10 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PartenaireDemandeController;
 use App\Http\Controllers\EvenementController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AssociationController; 
+use App\Http\Controllers\DonationController; 
+use App\Http\Controllers\EvenementFrontController; 
+
 
 /*
 |--------------------------------------------------------------------------
@@ -35,6 +39,13 @@ Route::get('/services', function () {
 Route::get('/contact', function () {
     return view('FrontOffice.contact.index');
 })->name('contact');
+
+
+// ✅ Routes publiques pour les événements
+Route::get('/evenement', [EvenementFrontController::class, 'listes'])->name('evenement.listes');
+Route::get('/evenement/{evenement}', [EvenementFrontController::class, 'show'])->name('evenement.show');
+
+
 // Routes protégées pour les utilisateurs connectés
 Route::middleware(['auth'])->group(function () {
     // Dashboard pour tous les utilisateurs connectés
@@ -47,16 +58,34 @@ Route::middleware(['auth'])->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/profile/show', [ProfileController::class, 'show'])->name('profile.show');
+
+ 
+ 
     
     // Password update route
     Route::put('/password', [ProfileController::class, 'updatePassword'])->name('password.update');
-});
+    
+   // Routes pour les dons (FrontOffice)
+    Route::get('/dons', [DonationController::class, 'index'])->name('donations.index');
+    Route::get('/dons/creer/{product}', [DonationController::class, 'create'])->name('donations.create');
+    Route::post('/dons', [DonationController::class, 'store'])->name('donations.store');
+    Route::get('/dons/{donation}/edit', [DonationController::class, 'edit'])->name('donations.edit');
+    Route::patch('/dons/{donation}', [DonationController::class, 'update'])->name('donations.update');
+    Route::delete('/dons/{donation}', [DonationController::class, 'destroy'])->name('donations.destroy');
+
+    
+  Route::post('/evenements/{evenement}/participate', [EvenementFrontController::class, 'participate'])->name('evenements.participate');
+    });
 
 // Routes protégées pour les admins uniquement
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin', function () {
         return view('BackOffice.dashboard.dashboard');
     })->name('admin.dashboard');
+
+    // BackOffice donation routes
+    Route::get('/admin/donations', [DonationController::class, 'adminIndex'])->name('admin.donations.index');
+    Route::get('/admin/donations/{donation}', [DonationController::class, 'show'])->name('admin.donations.show');
     
     // Admin resource routes - using simple closures for now
     Route::get('/users', function () {
@@ -66,7 +95,16 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/products', function () {
         return view('BackOffice.products.index');
     })->name('products.index');
+
+   
     
+    
+ 
+     // Routes CRUD pour les associations (BackOffice) - UNIQUEMENT resource pour éviter conflits
+    Route::resource('associations', AssociationController::class);
+    // Route de recherche pour associations
+    Route::get('/associations/search', [AssociationController::class, 'search'])->name('associations.search');
+ });
     Route::get('/categories', function () {
         return view('BackOffice.categories.index');
     })->name('categories.index');
@@ -101,7 +139,10 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/evenements/create', [EvenementController::class, 'create'])->name('evenements.create');
     Route::post('/evenements', [EvenementController::class, 'store'])->name('evenements.store');
     Route::get('/evenements/{evenement}', [EvenementController::class, 'show'])->name('evenements.show');
-  
+  // Routes pour édition, mise à jour et suppression
+Route::get('/evenements/{evenement}/edit', [EvenementController::class, 'edit'])->name('evenements.edit');
+Route::put('/evenements/{evenement}', [EvenementController::class, 'update'])->name('evenements.update');
+Route::delete('/evenements/{evenement}', [EvenementController::class, 'destroy'])->name('evenements.destroy');
   
     // Commandes, Livraisons, Véhicules, Trajets (BackOffice CRUD)
     Route::resource('orders', \App\Http\Controllers\CommandeController::class)->parameters([
@@ -111,7 +152,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::resource('vehicules', \App\Http\Controllers\VehiculeController::class);
     Route::resource('trajets', \App\Http\Controllers\TrajetController::class);
 
-});
+
 
 // Routes FrontOffice pour l'affichage des produits
 Route::get('/produits', [\App\Http\Controllers\ProductController::class, 'frontIndex'])->name('produits.index');
