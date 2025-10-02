@@ -35,6 +35,24 @@
                 <span>Contact</span>
             </a></li>
             @auth
+<li>
+    <a href="{{ route('evenement.listes') }}" 
+       class="nav-link {{ request()->routeIs('evenement.*') ? 'active' : '' }}">
+        <i class="fas fa-calendar-alt"></i>
+        <span>Événements</span>
+    </a>
+</li>
+
+
+
+
+            <li><a href="{{ route('donations.index') }}"
+                class="nav-link {{ request()->routeIs('donations.*') ? 'active' : '' }}">
+                <i class="fas fa-gift"></i>
+                <span>Mes dons</span>
+            </a></li>
+
+
                 <li>
                     <a href="{{ route('front.orders.create') }}" class="nav-link {{ request()->routeIs('front.orders.create') ? 'active' : '' }}">
                         <i class="fas fa-cart-plus"></i>

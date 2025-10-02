@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PartenaireDemandeController;
 use App\Http\Controllers\EvenementController;
+use App\Http\Controllers\FrontOffice\HomeController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AssociationController; 
 use App\Http\Controllers\DonationController; 
@@ -16,14 +17,34 @@ use App\Http\Controllers\EvenementFrontController;
 */
 
 // Page d'accueil publique
-Route::get('/', function () {
-    return view('FrontOffice.home.home');
-})->name('home');
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 // Page d'accueil front office (alias)
-Route::get('/home', function () {
-    return view('FrontOffice.home.home');
-})->name('home.index');
+Route::get('/home', [HomeController::class, 'index'])->name('home.index');
+
+// Route de fallback pour les images de partenaires
+Route::get('/storage/logos/{filename}', function($filename) {
+    $path = storage_path('app/public/logos/' . $filename);
+    
+    if (file_exists($path)) {
+        return response()->file($path);
+    }
+    
+    // Retourner l'image par défaut si le fichier n'existe pas
+    return response()->file(public_path('images/carr.png'));
+})->where('filename', '.*');
+
+// Route de fallback générale pour storage
+Route::get('/storage/{path}', function($path) {
+    $fullPath = storage_path('app/public/' . $path);
+    
+    if (file_exists($fullPath)) {
+        return response()->file($fullPath);
+    }
+    
+    // Retourner l'image par défaut
+    return response()->file(public_path('images/carr.png'));
+})->where('path', '.*');
 
 // Page about front office
 Route::get('/about', function () {
@@ -125,6 +146,9 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/demande-partenariat/{id}', [PartenaireDemandeController::class, 'show'])->name('demande.show');
     // Mettre à jour le statut (Accepter / Refuser)
     Route::patch('/demande-partenariat/{id}/status', [PartenaireDemandeController::class, 'updateStatus'])->name('demande.updateStatus');
+Route::get('/demande', [PartenaireDemandeController::class, 'index'])->name('demande.index');
+
+
 
     // Routes CRUD pour les Catégories (BackOffice)
     Route::resource('categories', \App\Http\Controllers\CatégorieController::class);
@@ -198,6 +222,18 @@ Route::middleware(['auth'])->group(function () {
 Route::get('/produits', [\App\Http\Controllers\ProductController::class, 'frontIndex'])->name('produits.index');
 Route::get('/produits/{product}', [\App\Http\Controllers\ProductController::class, 'frontShow'])->name('produits.show');
 Route::get('/produits/categorie/{categorie}', [\App\Http\Controllers\ProductController::class, 'frontByCategory'])->name('produits.category');
+
+// Route pour servir les images directement (fallback)
+Route::get('/storage/{path}', function ($path) {
+    $file = storage_path('app/public/' . $path);
+    
+    if (!file_exists($file)) {
+        abort(404);
+    }
+    
+    $mimeType = mime_content_type($file);
+    return response()->file($file, ['Content-Type' => $mimeType]);
+})->where('path', '.*')->name('storage.serve');
 
 
 // Route publique pour envoyer la demande de partenariat

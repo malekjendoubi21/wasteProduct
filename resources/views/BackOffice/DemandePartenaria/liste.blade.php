@@ -14,11 +14,12 @@
         <div class="card">
             <div class="card-header">
                 <h3 class="card-title">Toutes les demandes</h3>
-                <div class="card-actions">
-                    <div class="search-box">
+              <div class="card-actions">
+                    <form action="{{ route('demande.index') }}" method="GET" class="search-box">
                         <i class="fas fa-search"></i>
-                        <input type="text" placeholder="Rechercher une demande..." class="search-input">
-                    </div>
+                        <input type="text" name="search" placeholder="Rechercher une demande..." class="search-input" value="{{ $search ?? '' }}">
+                        <button type="submit" class="btn btn-sm btn-outline-secondary" style="margin-left: 5px;">Rechercher</button>
+                    </form>
                 </div>
             </div>
             <div class="card-body">

@@ -185,17 +185,42 @@
 
         <div class="partners-slider">
             <div class="partners-track d-flex flex-wrap justify-content-center gap-4">
-                <!-- Logos partenaires -->
-                @foreach(['carr.png','carr.png','carr.png','carr.png','carr.png','carr.png'] as $logo)
+                <!-- Logos partenaires dynamiques -->
+                @forelse($partenaires as $partenaire)
                     <div class="partner-logo text-center">
                         <div class="service-icon">
                             <div class="icon-bg"></div>
                             <div class="icon-wrapper">
-                                <img src="{{ asset('images/'.$logo) }}" alt="Logo partenaire" class="partner-logo-img" loading="lazy">
+                                <img src="{{ $partenaire->logo_url }}" 
+                                     alt="Logo {{ $partenaire->nom_organisation }}" 
+                                     class="partner-logo-img" 
+                                     loading="lazy"
+                                     title="{{ $partenaire->nom_organisation }}"
+                                     data-fallback="{{ asset('images/carr.png') }}"
+                                     onerror="this.src=this.dataset.fallback; this.onerror=null;">
                             </div>
                         </div>
+                        <div class="partner-name mt-2">
+                            <small class="text-muted">{{ $partenaire->nom_organisation }}</small>
+                        </div>
                     </div>
-                @endforeach
+                @empty
+                    <!-- Logos statiques en cas d'absence de partenaires -->
+                    @foreach(['carr.png','carr.png','carr.png','carr.png','carr.png','carr.png'] as $logo)
+                        <div class="partner-logo text-center">
+                            <div class="service-icon">
+                                <div class="icon-bg"></div>
+                                <div class="icon-wrapper">
+                                    <img src="{{ asset('images/'.$logo) }}" 
+                                         alt="Logo partenaire" 
+                                         class="partner-logo-img" 
+                                         loading="lazy"
+                                         onerror="this.style.display='none';">
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                @endforelse
             </div>
         </div>
 
@@ -432,6 +457,24 @@ document.getElementById('demande-btn').addEventListener('click', function() {
     max-width: 100%;
     height: auto;
     object-fit: contain;
+}
+
+.partner-name {
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.partner-logo:hover .partner-name {
+    opacity: 1;
+}
+
+.partner-logo:hover .service-icon {
+    transform: translateY(-5px);
+}
+
+.partner-logo {
+    transition: all 0.3s ease;
+    cursor: pointer;
 }
 
 .service-title {

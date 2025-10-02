@@ -64,10 +64,27 @@ class PartenaireDemandeController extends Controller
         return redirect()->back()->with('success', 'Votre demande a été envoyée avec succès !');
     }
     // Liste des demandes
-    public function index()
+   public function index(Request $request)
     {
-        $demandes = DemandePartenariat::orderBy('created_at', 'asc')->get();
-        return view('BackOffice.DemandePartenaria.liste', compact('demandes'));
+        $search = $request->input('search');
+
+        $query = DemandePartenariat::query();
+
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('nom_organisation', 'like', "%{$search}%")
+                  ->orWhere('type_organisation', 'like', "%{$search}%")
+                  ->orWhere('secteur_activite', 'like', "%{$search}%")
+                  ->orWhere('email_contact', 'like', "%{$search}%")
+                  ->orWhere('telephone_contact', 'like', "%{$search}%")
+                  ->orWhere('adresse', 'like', "%{$search}%")
+                  ->orWhere('message', 'like', "%{$search}%")
+                  ->orWhere('statut', 'like', "%{$search}%");
+            });
+        }
+
+        $demandes = $query->orderBy('created_at', 'asc')->get();
+        return view('BackOffice.DemandePartenaria.liste', compact('demandes', 'search'));
     }
 
 

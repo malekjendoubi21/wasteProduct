@@ -170,7 +170,22 @@ class Product extends Model
      */
     public function getImageUrlAttribute()
     {
-        return $this->image ? asset('storage/' . $this->image) : null;
+        if (!$this->image) {
+            return null;
+        }
+        
+        // Vérifier si le fichier existe
+        $fullPath = storage_path('app/public/' . $this->image);
+        if (!file_exists($fullPath)) {
+            return null;
+        }
+        
+        // Pour le développement local, utiliser une URL directe
+        if (app()->environment('local')) {
+            return url('storage/' . $this->image);
+        }
+        
+        return asset('storage/' . $this->image);
     }
 
     /**
